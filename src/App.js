@@ -1,24 +1,38 @@
-import logo from './logo.svg';
 import './App.css';
+import { Route,Routes } from 'react-router-dom';
+import Layout from './Helper/Layout'
+import UnAuthorisedPage from './Pages/UnAuthorisedPage'
+import NotFoundPage from './Pages/NotFoundPage'
+import LoginPage from './Pages/LoginPage'
+import RequireAuth from './Helper/RequireAuth';
+import DashboardPage from './Pages/DashboardPage'
+import AboutPage from './Pages/AboutPage';
+import TransactionPage from './Pages/TransactionPage';
+import ClientPage from './Pages/ClientPage';
+
 
 function App() {
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  <Routes>
+    <Route path='/' element={<Layout />}>
+        {/* PRIVATE ROUTES */}
+        <Route element={<RequireAuth />} >
+          <Route index element={<DashboardPage />} />
+          <Route path='transactions' element={<TransactionPage />} />
+          <Route path='clients' element={<ClientPage />} />
+        </Route>
+
+    </Route>
+
+  {/* PUBLIC ROUTES  */}
+    <Route path='/login' element={<LoginPage />} />
+    <Route path='/about' element={<AboutPage />} />
+
+  {/* NON LAYOUT ROUTES  */}
+    <Route path='unauthorised' element={<UnAuthorisedPage />} />
+    <Route path='*' element={<NotFoundPage />} />
+  </Routes>
   );
 }
 
